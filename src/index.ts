@@ -21,6 +21,12 @@ async function run() {
     console.log('modifiedFiles:', modifiedFiles);
     console.log('pagesToCheck:', pagesToCheck);
 
+    // Filter to include only files that start with 'src' and remove the 'src/' prefix
+    const filteredModifiedFiles = modifiedFiles
+      .filter(file => file.startsWith('src'))
+      .map(file => file.replace(/^src\//, '')); // Remove 'src/' prefix
+    console.log('filteredModifiedFiles:', filteredModifiedFiles);
+
     // ls -a in current directory
     exec('ls -a', (err: any, stdout: any, stderr: any) => {
       if (err) {
@@ -35,24 +41,29 @@ async function run() {
     // Iterate over each page to check dependencies with modified files
     for (const page of pagesToCheck) {
       // Run madge to analyze dependencies
-      const dependencyTree = await madge(page, { baseDir: projectDirectory, tsConfig: `${projectDirectory}tsconfig.json` });
+      const dependencyTree = await madge(`${projectDirectory}${page}`, { tsConfig: `${projectDirectory}tsconfig.json` });
 
-      console.log('page:', page);
-      console.log('dependencyTree:', dependencyTree);
       // Get the list of dependencies for the current page
       const dependencies = dependencyTree.obj();
 
       console.log('dependencies:', dependencies);
 
       // Check if any modified file is a dependency of the current page
-      for (const modifiedFile of modifiedFiles) {
-        console.log('modifiedFile:', modifiedFile);
-        if (dependencies[page] && dependencies[page].includes(modifiedFile)) {
-          affectedPages.push(page);
-          break;
+      for (const modifiedFile of filteredModifiedFiles) {
+        // Check if the modified file is part of the dependency path
+        let isAffected = false;
+        for (const dependencyFiles of Object.values(dependencies)) {
+          if (dependencyFiles.some(dep => dep.includes(modifiedFile))) {
+            affectedPages.push(page);
+            isAffected = true;
+            break;
+          }
         }
+
+        if (isAffected) break;
       }
     }
+
     console.log('affectedPages:', affectedPages);
     // Output the affected pages as a comma-separated list
     core.setOutput('affected_pages', affectedPages.length > 0 ? affectedPages.join(',') : '[]');
