@@ -16,8 +16,7 @@
 |--------------------|-----------------------------------------------------------------------------|----------|---------|
 | `modified_files`   | A list of modified files from the PR.                                        | Yes      | N/A     |
 | `pages_to_check`   | A list of Next.js pages to compare against the modified files.               | Yes      | N/A     |
-| `project_directory`| The root directory of the Next.js project (if not the root).                 | No       | `./`    |
-| `madge_options`    | Custom options for Madge to modify the dependency analysis.                  | No       | `''`    |
+| `host_output`      | The output host for the affected pages list.                                 | No       | http://localhost:3000/ |
 
 ## Outputs
 
@@ -72,9 +71,8 @@ jobs:
   
 - **`pages_to_check`**: A comma-separated list of Next.js pages to compare against the modified files. This helps focus the analysis on critical pages.
   
-- **`project_directory`**: The root directory of your Next.js project, used to locate the `tsconfig.json` file. This input is optional, and by default, it assumes the project is in the root directory.
-  
-- **`madge_options`**: Additional Madge configuration to modify the behavior of dependency analysis, such as circular dependency detection.
+- **`host_output`**: The output host for the affected pages list.
+
 
 ### Contributing
 

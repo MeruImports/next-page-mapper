@@ -16,15 +16,10 @@ inputs:
     description: 'The list of pages to check in the git diff.'
     required: true
   
-  project_directory:
-    description: 'The root path of the project.'
+  host_output:
+    description: 'The host output file.'
     required: false
-    default: './'
-
-  madge_options:  
-    description: 'The options to pass to madge.'
-    required: false
-    default: ''
+    default: 'http://localhost:3000/'
 
 outputs:
 
