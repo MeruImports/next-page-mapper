@@ -49,7 +49,7 @@ jobs:
         uses: tj-actions/changed-files@v45.0.3
 
       - name: Run Next.js Page Dependency Analyzer
-        uses: your-username/next-page-dependency-analyzer@v1
+        uses: MeruImports/next-page-mapper@v1
         id: analyze_pages
         with:
           modified_files: ${{ steps.changed-files.outputs.all_changed_files }}
