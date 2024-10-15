@@ -1,0 +1,36 @@
+name: 'Next Page Mapper'
+description: 'This action takes the git diff between two branches, generates a JSON file with the affected page/views'
+author: 'Alejandro Varela'
+
+branding:
+  icon: 'activity'
+  color: 'red'
+
+inputs:
+
+  modified_files:
+    description: 'The list of modified files in the git diff.'
+    required: true
+  
+  pages_to_check:
+    description: 'The list of pages to check in the git diff.'
+    required: true
+  
+  project_directory:
+    description: 'The root path of the project.'
+    required: false
+    default: './'
+
+  madge_options:  
+    description: 'The options to pass to madge.'
+    required: false
+    default: ''
+
+outputs:
+
+  affected_pages:
+    description: 'The list of affected pages.'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
