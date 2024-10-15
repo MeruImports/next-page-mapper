@@ -48,13 +48,12 @@ async function run() {
       page.replace(/^src\/pages\//, '').replace(/^src\/app\//, '').replace(/\.tsx$/, '')
         .replace(/\/index$/, '').replace(/\/page$/, '').replace(/\/\([^)]*\)/g, '')
     )
-      .map(page => `${host_output}${page}`)
-      .join('\n');
+      .map(page => `${host_output}${page}`);
 
     console.log('formatOutput:', formatOutput);
 
     // Output the affected pages as a comma-separated list
-    core.setOutput('affected_pages', affectedPages.length > 0 ? formatOutput : '');
+    core.setOutput('affected_pages', affectedPages.length > 0 ? formatOutput : []);
 
   } catch (error) {
     core.setFailed(`Action failed with error: ${error}`);
