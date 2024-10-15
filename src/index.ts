@@ -41,7 +41,7 @@ async function run() {
     // Iterate over each page to check dependencies with modified files
     for (const page of pagesToCheck) {
       // Run madge to analyze dependencies
-      const dependencyTree = await madge(`${projectDirectory}${page}`, { tsConfig: `${projectDirectory}tsconfig.json` });
+      const dependencyTree = await madge(page, { tsConfig: `tsconfig.json` });
 
       // Get the list of dependencies for the current page
       const dependencies = dependencyTree.obj();
