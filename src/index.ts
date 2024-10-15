@@ -11,6 +11,13 @@ async function run() {
 
     const pagesToCheck = pagesToCheckInput.split(',');
 
+    //logs
+    console.log('modifiedFilesInput:', modifiedFilesInput);
+    console.log('pagesToCheckInput:', pagesToCheckInput);
+    console.log('projectDirectory:', projectDirectory);
+    console.log('madgeOptions:', madgeOptions);
+    console.log('pagesToCheck:', pagesToCheck);
+
     const affectedPages: string[] = [];
 
     // Iterate over each page to check dependencies with modified files
@@ -18,18 +25,23 @@ async function run() {
       // Run madge to analyze dependencies
       const dependencyTree = await madge(page, { baseDir: projectDirectory, tsConfig: `${projectDirectory}/tsconfig.json`, ...JSON.parse(madgeOptions) });
 
+      console.log('page:', page);
+      console.log('dependencyTree:', dependencyTree);
       // Get the list of dependencies for the current page
       const dependencies = dependencyTree.obj();
 
+      console.log('dependencies:', dependencies);
+
       // Check if any modified file is a dependency of the current page
       for (const modifiedFile of modifiedFilesInput) {
+        console.log('modifiedFile:', modifiedFile);
         if (dependencies[page] && dependencies[page].includes(modifiedFile)) {
           affectedPages.push(page);
           break;
         }
       }
     }
-
+    console.log('affectedPages:', affectedPages);
     // Output the affected pages as a comma-separated list
     core.setOutput('affected_pages', affectedPages.length > 0 ? affectedPages.join(',') : '[]');
 
