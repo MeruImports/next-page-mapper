@@ -45,8 +45,8 @@ async function run() {
     console.log('affectedPages:', affectedPages);
 
     const formatOutput = affectedPages.map(page =>
-      page.replace(/^src\/pages\//, '').replace(/^src\/app\//, '').replace(/\.tsx$/, '')
-        .replace(/\/index$/, '').replace(/\/page$/, '').replace(/\/\([^)]*\)/g, '')
+      page.replace(/^src\/pages\//, '').replace(/^src\/app\//, '').replace(/\.tsx$/, '').replace(/\.jsx$/, '')
+        .replace(/\/index$/, '').replace(/\/page$/, '').replace(/\/\([^)]*\)/g, '').replace(/\/+/g, '/').replace(/^\/|\/$/g, '')
     )
       .map(page => `${host_output}${page}`);
 
